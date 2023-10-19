@@ -1,9 +1,9 @@
 import React from 'react'
-
+import './Header.css'
 export const Header = () => {
   return (
-    <>
-    <h1>Harry Books - Tienda Online</h1>
-    </>
+    <header>
+    <h1>Harry Books -Tienda Online</h1>
+    </header>
   )
 }
