@@ -72,10 +72,10 @@ export const Main = () => {
           className="btn-car"
           onClick={() => setCarritoVisible(!carritoVisible)}
         >
-          {carritoVisible ? "Ocultar Carrito" : "Ir al carrito de compras"}
+          {carritoVisible ? "Ocultar Carrito" : "Ir al carrito de compras"}({contador})
         </Link>
 
-        <button onClick={confirmarCompra}>Confirmar Compra</button>
+        {/* <button onClick={confirmarCompra}>Confirmar Compra</button> */}
       </div>
 
       <div>
