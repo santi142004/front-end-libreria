@@ -12,7 +12,8 @@ header{
 }
 h1{
     text-align: center;
-    color: #ddd9d9;
+    color: #ffffff;
+    -webkit-text-stroke: 1px black;
     font-size: 40px;
     font-family: 'Harry Potter', sans-serif;
 }

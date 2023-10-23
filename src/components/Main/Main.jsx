@@ -44,7 +44,7 @@ export const Main = () => {
   return (
     <main className="principal1">
       <div className="principal">
-        <h3>Libros Disponibles</h3>
+        <h3 className='h31'>Libros Disponibles</h3>
         <Link
           to="/carrito"
           state={{ carrito }}
