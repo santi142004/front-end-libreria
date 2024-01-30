@@ -1,38 +1,57 @@
 import React, { useState, useEffect } from "react";
 import "./Main.css";
-import { Link } from "react-router-dom";
 
 export const Main = () => {
   const [libros, setLibros] = useState([]);
   const [carrito, setCarrito] = useState({});
+  const [carritoSeleccionado, setCarritoSeleccionado] = useState([]);
   const [contador, setContador] = useState(0);
   const [carritoVisible, setCarritoVisible] = useState(false);
 
   useEffect(() => {
     const obtenerLibros = async () => {
       try {
-        const response = await fetch("http://localhost:3000/harryBooks");
+        const response = await fetch("https://back-libreria.vercel.app/");
         if (!response.ok) {
           throw new Error("Error al obtener los libros");
         }
         const data = await response.json();
-        setLibros(data);
+        setLibros(data); // Actualiza el estado libros con la respuesta del servidor.
       } catch (error) {
         console.error("Error al obtener los libros", error);
       }
     };
+
     obtenerLibros();
   }, []);
 
   const agregarAlCarrito = (libro) => {
     const cantidadEnCarrito = carrito[libro.id_libro] || 0;
+
     if (cantidadEnCarrito < libro.cantidad) {
       const nuevoCarrito = { ...carrito };
       nuevoCarrito[libro.id_libro] = (nuevoCarrito[libro.id_libro] || 0) + 1;
-      console.log("se agrega el libro");
-      console.log(libro);
       setCarrito(nuevoCarrito);
       setContador(contador + 1);
+
+      // Verificar si el libro ya está en carritoSeleccionado
+      const libroIndex = carritoSeleccionado.findIndex(
+        (item) => item.titulo === libro.titulo_libro
+      );
+
+      if (libroIndex !== -1) {
+        const carritoSeleccionadoActualizado = [...carritoSeleccionado];
+        carritoSeleccionadoActualizado[libroIndex].cantidad += 1;
+        setCarritoSeleccionado(carritoSeleccionadoActualizado);
+      } else {
+        // Agregar el libro al carritoSeleccionado
+        const libroSeleccionado = {
+          titulo: libro.titulo_libro,
+          cantidad: cantidadEnCarrito + 1,
+          precio: libro.precio_libro,
+        };
+        setCarritoSeleccionado([...carritoSeleccionado, libroSeleccionado]);
+      }
     }
   };
 
@@ -58,6 +77,15 @@ export const Main = () => {
             <h4>Valor Total</h4>
           </div>
 
+          {carritoSeleccionado.map((item, index) => (
+            <div key={index} className="carrito-item">
+              <span className="items">{item.titulo}</span>
+              <span className="items">{item.cantidad}</span>
+              <span className="items">${item.precio}</span>
+              <span className="items">${item.cantidad * item.precio}</span>
+            </div>
+          ))}
+
           <div className="btns">
             <button className="btn-car">cancelar la compra</button>
             <button className="btn-car">confirmar la compra</button>
@@ -66,15 +94,13 @@ export const Main = () => {
       )}
       <div className="principal">
         <h3 className="h31">Libros Disponibles</h3>
-        <Link
-          // to="/carrito"
-          // state={{ carrito }}
+        <button
           className="btn-car"
           onClick={() => setCarritoVisible(!carritoVisible)}
         >
-          {carritoVisible ? "Ocultar Carrito" : "Ir al carrito de compras"}({contador})
-        </Link>
-
+          {carritoVisible ? "Ocultar Carrito" : "Ir al carrito de compras"}(
+          {contador})
+        </button>
         {/* <button onClick={confirmarCompra}>Confirmar Compra</button> */}
       </div>
 
