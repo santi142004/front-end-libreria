@@ -11,7 +11,7 @@ export const Main = () => {
   useEffect(() => {
     const obtenerLibros = async () => {
       try {
-        const response = await fetch("https://back-libreria.vercel.app/");
+        const response = await fetch("http://localhost:3000/harrybooks");
         if (!response.ok) {
           throw new Error("Error al obtener los libros");
         }
